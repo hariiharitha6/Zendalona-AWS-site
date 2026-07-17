@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWS Learning Resources | Zendalona</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Atkinson+Hyperlegible+Next:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#16211d;
+    --ink-soft:#4b5850;
+    --paper:#f6f6f2;
+    --paper-raised:#ffffff;
+    --teal:#0e3f45;
+    --teal-deep:#082a2e;
+    --teal-tint:#e2ede9;
+    --gold:#b8811f;
+    --gold-tint:#f7ecd3;
+    --sage:#5f7d63;
+    --sage-tint:#e9f0e6;
+    --line:#dcdcd3;
+    --focus:#1d6fae;
+    --radius:10px;
+    --maxw:1120px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Atkinson Hyperlegible Next','Atkinson Hyperlegible',Arial,sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  body.large-text{ font-size:19px; }
+  body.large-text h1{ font-size:3.1rem; }
+  body.large-text h2{ font-size:2.1rem; }
+  body.high-contrast{ --ink:#000000; --paper:#ffffff; --ink-soft:#1a1a1a; --line:#000000; --teal:#04282c; --teal-tint:#d7e6e2; }
+  a{ color:var(--teal); }
+  a:focus-visible, button:focus-visible, summary:focus-visible{
+    outline:3px solid var(--focus); outline-offset:2px;
+  }
+  img{max-width:100%;display:block;}
+  .wrap{ max-width:var(--maxw); margin:0 auto; padding:0 28px; }
+
+  /* skip link */
+  .skip-link{
+    position:absolute; left:-9999px; top:0; background:var(--teal); color:#fff;
+    padding:10px 18px; z-index:200; border-radius:0 0 8px 0;
+  }
+  .skip-link:focus{ left:0; }
+
+  /* top utility / accessibility bar — the site's real one, extended */
+  .a11y-bar{
+    background:var(--teal-deep); color:#eef4f2; font-size:14px;
+  }
+  .a11y-bar .wrap{ display:flex; align-items:center; justify-content:space-between; padding:8px 28px; flex-wrap:wrap; gap:8px; }
+  .a11y-controls{ display:flex; gap:8px; align-items:center; }
+  .a11y-controls span{ color:#c7d6d2; margin-right:4px; }
+  .a11y-btn{
+    background:transparent; border:1px solid #4f6e6b; color:#eef4f2; font-family:inherit;
+    font-size:13px; padding:5px 11px; border-radius:6px; cursor:pointer;
+  }
+  .a11y-btn[aria-pressed="true"]{ background:var(--gold); border-color:var(--gold); color:#241a06; font-weight:700; }
+  .a11y-btn:hover{ border-color:#87a19e; }
+
+  /* header / nav — mirrors zendalona.com structure */
+  header.site{ background:var(--paper-raised); border-bottom:1px solid var(--line); position:sticky; top:0; z-index:100; }
+  .nav-row{ display:flex; align-items:center; justify-content:space-between; padding:16px 28px; gap:24px; }
+  .brand{ display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--ink); }
+  .brand-mark{
+    width:38px; height:38px; border-radius:50%; background:var(--teal); color:#fff;
+    display:flex; align-items:center; justify-content:center; font-weight:700; font-size:15px; flex:none;
+  }
+  .brand-text strong{ display:block; font-size:17px; }
+  .brand-text span{ display:block; font-size:12px; color:var(--ink-soft); }
+  nav.main ul{ list-style:none; display:flex; gap:22px; margin:0; padding:0; flex-wrap:wrap; }
+  nav.main a{ text-decoration:none; color:var(--ink); font-size:15px; font-weight:500; padding:6px 2px; border-bottom:2px solid transparent; }
+  nav.main a:hover{ border-bottom-color:var(--gold); }
+  nav.main li.current a{ border-bottom-color:var(--teal); color:var(--teal); font-weight:700; }
+  .new-tag{ background:var(--gold); color:#241a06; font-size:10px; font-weight:700; padding:2px 6px; border-radius:5px; margin-left:6px; vertical-align:2px; }
+
+  /* hero */
+  .hero{ background:var(--teal); color:#fff; padding:64px 0 56px; }
+  .hero .wrap{ display:grid; grid-template-columns:1.3fr 1fr; gap:48px; align-items:center; }
+  .eyebrow{ text-transform:uppercase; letter-spacing:.08em; font-size:13px; color:var(--gold-tint); font-weight:700; }
+  h1{ font-size:2.6rem; line-height:1.15; margin:14px 0 18px; }
+  .hero p{ font-size:1.15rem; color:#dce9e6; max-width:52ch; }
+  .hero-actions{ display:flex; gap:14px; margin-top:26px; flex-wrap:wrap; }
+  .btn{
+    display:inline-block; padding:12px 22px; border-radius:8px; font-weight:700; font-size:15px;
+    text-decoration:none; border:2px solid transparent; cursor:pointer; font-family:inherit;
+  }
+  .btn-primary{ background:var(--gold); color:#241a06; }
+  .btn-primary:hover{ background:#a5730f; }
+  .btn-ghost{ background:transparent; border-color:#7fa19c; color:#fff; }
+  .btn-ghost:hover{ border-color:#fff; }
+  .hero-panel{
+    background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.25); border-radius:14px; padding:22px;
+  }
+  .hero-panel h2{ font-size:1.05rem; margin:0 0 12px; color:#fff; }
+  .hero-stat{ display:flex; justify-content:space-between; padding:10px 0; border-top:1px solid rgba(255,255,255,.18); font-size:14px; }
+  .hero-stat:first-of-type{ border-top:none; }
+  .hero-stat b{ color:var(--gold-tint); font-size:16px; }
+
+  section{ padding:56px 0; }
+  h2.section-title{ font-size:1.9rem; margin:0 0 8px; color:var(--teal); }
+  .section-lede{ color:var(--ink-soft); max-width:65ch; margin:0 0 32px; font-size:1.02rem; }
+
+  /* program cards */
+  .card-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+  .card{ background:var(--paper-raised); border:1px solid var(--line); border-radius:var(--radius); padding:22px; }
+  .card-icon{
+    width:42px; height:42px; border-radius:9px; background:var(--teal-tint); color:var(--teal);
+    display:flex; align-items:center; justify-content:center; font-weight:700; font-size:18px; margin-bottom:14px;
+  }
+  .card h3{ font-size:1.08rem; margin:0 0 8px; }
+  .card p{ font-size:14.5px; color:var(--ink-soft); margin:0 0 14px; }
+  .card a.card-link{ font-size:14px; font-weight:700; text-decoration:none; }
+  .card a.card-link::after{ content:" →"; }
+
+  /* comparison table */
+  table.compare{ width:100%; border-collapse:collapse; background:var(--paper-raised); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; }
+  table.compare caption{ text-align:left; font-size:13px; color:var(--ink-soft); padding-bottom:10px; }
+  table.compare th, table.compare td{ text-align:left; padding:13px 16px; border-bottom:1px solid var(--line); font-size:14.5px; vertical-align:top; }
+  table.compare thead th{ background:var(--teal); color:#fff; font-weight:700; }
+  table.compare tbody tr:nth-child(even){ background:#fafaf6; }
+  table.compare tbody tr:last-child td{ border-bottom:none; }
+
+  /* certification path */
+  .cert-track{ display:flex; gap:0; align-items:stretch; flex-wrap:wrap; }
+  .cert-step{ flex:1; min-width:200px; background:var(--paper-raised); border:1px solid var(--line); border-radius:var(--radius); padding:18px; position:relative; }
+  .cert-step + .cert-step{ margin-left:16px; }
+  .cert-step .level{ font-size:12px; text-transform:uppercase; letter-spacing:.06em; font-weight:700; color:var(--gold); }
+  .cert-step h3{ font-size:1rem; margin:6px 0 8px; }
+  .cert-step p{ font-size:13.5px; color:var(--ink-soft); margin:0; }
+
+  /* credits band */
+  .credits{ background:var(--sage-tint); border:1px solid #cddccd; border-radius:14px; padding:32px; display:grid; grid-template-columns:1fr 1fr; gap:32px; }
+  .credits h2{ margin-top:0; color:var(--teal); }
+  .credit-list{ list-style:none; margin:0; padding:0; }
+  .credit-list li{ padding:10px 0; border-top:1px solid #cddccd; font-size:14.5px; }
+  .credit-list li:first-child{ border-top:none; }
+  .credit-list b{ display:block; color:var(--teal); }
+
+  /* steps */
+  .steps{ counter-reset:step; display:grid; grid-template-columns:repeat(4,1fr); gap:18px; }
+  .step{ background:var(--paper-raised); border:1px solid var(--line); border-radius:var(--radius); padding:20px 18px; }
+  .step::before{
+    counter-increment:step; content:counter(step);
+    width:30px; height:30px; border-radius:50%; background:var(--teal); color:#fff;
+    display:flex; align-items:center; justify-content:center; font-weight:700; margin-bottom:12px; font-size:14px;
+  }
+  .step h3{ font-size:.98rem; margin:0 0 6px; }
+  .step p{ font-size:13.5px; color:var(--ink-soft); margin:0; }
+
+  /* faq */
+  details.faq{ background:var(--paper-raised); border:1px solid var(--line); border-radius:var(--radius); margin-bottom:12px; padding:6px 4px; }
+  details.faq summary{ cursor:pointer; padding:14px 18px; font-weight:700; font-size:15px; list-style:none; display:flex; justify-content:space-between; align-items:center; }
+  details.faq summary::-webkit-details-marker{ display:none; }
+  details.faq summary::after{ content:"+"; font-size:20px; color:var(--gold); font-weight:700; }
+  details.faq[open] summary::after{ content:"–"; }
+  details.faq p{ padding:0 18px 16px; margin:0; color:var(--ink-soft); font-size:14.5px; }
+
+  /* contact cta matching site */
+  .contact-cta{ background:var(--teal); color:#fff; border-radius:14px; padding:36px; text-align:center; }
+  .contact-cta h2{ color:#fff; margin-top:0; }
+  .contact-cta p{ color:#dce9e6; max-width:55ch; margin:0 auto 22px; }
+
+  footer.site{ background:var(--teal-deep); color:#c7d6d2; padding:40px 0 24px; margin-top:40px; }
+  .foot-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:24px; margin-bottom:24px; }
+  .foot-grid h4{ color:#fff; font-size:14px; margin:0 0 10px; }
+  .foot-grid ul{ list-style:none; margin:0; padding:0; }
+  .foot-grid li{ margin-bottom:7px; font-size:13.5px; }
+  .foot-grid a{ color:#c7d6d2; text-decoration:none; }
+  .foot-grid a:hover{ text-decoration:underline; }
+  .foot-bottom{ border-top:1px solid #24504c; padding-top:18px; font-size:12.5px; text-align:center; color:#9cb2ad; }
+
+  .badge-note{
+    display:inline-block; background:var(--gold-tint); color:#5a3f0d; border:1px solid #e4c47b;
+    font-size:12.5px; padding:8px 14px; border-radius:8px; margin-bottom:18px;
+  }
+
+  @media (max-width: 880px){
+    .hero .wrap{ grid-template-columns:1fr; }
+    .card-grid{ grid-template-columns:1fr 1fr; }
+    .cert-track{ flex-direction:column; }
+    .cert-step + .cert-step{ margin-left:0; margin-top:16px; }
+    .credits{ grid-template-columns:1fr; }
+    .steps{ grid-template-columns:1fr 1fr; }
+    .foot-grid{ grid-template-columns:1fr 1fr; }
+    nav.main ul{ gap:14px; }
+  }
+  @media (max-width: 560px){
+    .card-grid{ grid-template-columns:1fr; }
+    .steps{ grid-template-columns:1fr; }
+    .foot-grid{ grid-template-columns:1fr; }
+    h1{ font-size:2rem; }
+  }
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<div class="a11y-bar">
+  <div class="wrap">
+    <span>Vision Beyond Sight — this mockup demonstrates on-page accessibility controls</span>
+    <div class="a11y-controls">
+      <span>Display:</span>
+      <button class="a11y-btn" id="toggle-text" aria-pressed="false" type="button">A+ Larger text</button>
+      <button class="a11y-btn" id="toggle-contrast" aria-pressed="false" type="button">High contrast</button>
+    </div>
+  </div>
+</div>
+
+<header class="site">
+  <div class="nav-row">
+    <a class="brand" href="#">
+      <span class="brand-mark">Z</span>
+      <span class="brand-text"><strong>Zendalona</strong><span>Vision Beyond Sight</span></span>
+    </a>
+    <nav class="main" aria-label="Primary">
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Products</a></li>
+        <li><a href="#">Events</a></li>
+        <li><a href="#">Philosophy</a></li>
+        <li><a href="#">About us</a></li>
+        <li><a href="#">Donations</a></li>
+        <li><a href="#">Opportunities</a></li>
+        <li class="current"><a href="#" aria-current="page">AWS Learning<span class="new-tag">New</span></a></li>
+        <li><a href="#">Contact us</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="hero" style="padding-top:64px;">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow">AWS learning resources</p>
+        <h1>Free AWS training, grants and certifications — explained in one place</h1>
+        <p>Zendalona has gathered every AWS education program, promotional credit and certification path worth knowing about, and translated the jargon into plain language, so you can find the one that fits you in minutes, not hours.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#programs">Browse programs</a>
+          <a class="btn btn-ghost" href="#compare">Compare options</a>
+        </div>
+      </div>
+      <div class="hero-panel">
+        <h2>What's on this page</h2>
+        <div class="hero-stat"><span>Education & training programs</span><b>AWS Educate</b></div>
+        <div class="hero-stat"><span>Funding for nonprofits</span><b>Up to $5,000</b></div>
+        <div class="hero-stat"><span>Certification tiers</span><b>4 levels</b></div>
+        <div class="hero-stat"><span>Research credits</span><b>Up to $50,000</b></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="programs">
+    <div class="wrap">
+      <h2 class="section-title">AWS programs at a glance</h2>
+      <p class="section-lede">Six starting points, depending on who you are and what you need. Each links straight to the official AWS page for enrollment.</p>
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon">Ed</div>
+          <h3>AWS Educate</h3>
+          <p>Free, self-paced cloud computing training for students and educators, with no credit card required.</p>
+          <a class="card-link" href="#">View program</a>
+        </div>
+        <div class="card">
+          <div class="card-icon">Cr</div>
+          <h3>AWS Cloud Credit for Research</h3>
+          <p>Promotional credit for researchers using AWS to accelerate a specific research project.</p>
+          <a class="card-link" href="#">View program</a>
+        </div>
+        <div class="card">
+          <div class="card-icon">Np</div>
+          <h3>AWS Nonprofit Credit Program</h3>
+          <p>Up to $5,000 a year in AWS credit for registered nonprofits, distributed through TechSoup.</p>
+          <a class="card-link" href="#">View program</a>
+        </div>
+        <div class="card">
+          <div class="card-icon">Im</div>
+          <h3>AWS Imagine Grant</h3>
+          <p>Unrestricted funding, AWS credit and technical support for nonprofits building mission-driven tech.</p>
+          <a class="card-link" href="#">View program</a>
+        </div>
+        <div class="card">
+          <div class="card-icon">Ra</div>
+          <h3>Amazon Research Awards</h3>
+          <p>Up to $100,000 in unrestricted funds and $50,000 in AWS credit for university and nonprofit research.</p>
+          <a class="card-link" href="#">View program</a>
+        </div>
+        <div class="card">
+          <div class="card-icon">Ct</div>
+          <h3>AWS Certifications</h3>
+          <p>Foundational through Professional credentials that validate cloud skills to employers.</p>
+          <a class="card-link" href="#">View program</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="compare" style="background:var(--paper-raised);border-top:1px solid var(--line);border-bottom:1px solid var(--line);">
+    <div class="wrap">
+      <h2 class="section-title">Which program fits you?</h2>
+      <p class="section-lede">A quick side-by-side so you don't have to read six AWS pages to figure this out.</p>
+      <table class="compare">
+        <caption>Comparison of AWS education and funding programs by audience and benefit</caption>
+        <thead>
+          <tr><th scope="col">Program</th><th scope="col">Who it's for</th><th scope="col">What you get</th><th scope="col">Cost</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>AWS Educate</td><td>Students, educators</td><td>Self-paced training, learning paths</td><td>Free</td></tr>
+          <tr><td>Cloud Credit for Research</td><td>Individual researchers</td><td>AWS promotional credit</td><td>Free to apply</td></tr>
+          <tr><td>Nonprofit Credit Program</td><td>Registered 501(c) nonprofits</td><td>Up to $5,000 AWS credit / year</td><td>Free to apply</td></tr>
+          <tr><td>Imagine Grant</td><td>US-registered nonprofits</td><td>Cash funding + AWS credit + support</td><td>Free to apply</td></tr>
+          <tr><td>Amazon Research Awards</td><td>University faculty, nonprofit researchers</td><td>Unrestricted funds + AWS credit</td><td>Free to apply</td></tr>
+          <tr><td>AWS Certifications</td><td>Anyone building a cloud career</td><td>Industry-recognized credential</td><td>$100–$300 per exam</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <h2 class="section-title">Certification path</h2>
+      <p class="section-lede">AWS certifications are organized into four tiers. Most people start at the bottom and work up.</p>
+      <div class="cert-track">
+        <div class="cert-step">
+          <span class="level">Foundational</span>
+          <h3>Cloud Practitioner</h3>
+          <p>Core cloud concepts, AWS services and billing basics. No prior experience needed.</p>
+        </div>
+        <div class="cert-step">
+          <span class="level">Associate</span>
+          <h3>Solutions Architect & others</h3>
+          <p>Role-based skills in architecture, development, operations or data.</p>
+        </div>
+        <div class="cert-step">
+          <span class="level">Professional</span>
+          <h3>Solutions Architect / DevOps</h3>
+          <p>Advanced, production-level design and automation skills.</p>
+        </div>
+        <div class="cert-step">
+          <span class="level">Specialty</span>
+          <h3>Security, networking, ML</h3>
+          <p>Deep expertise in one focused technical domain.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:var(--paper-raised);border-top:1px solid var(--line);border-bottom:1px solid var(--line);">
+    <div class="wrap">
+      <span class="badge-note">Promotional credits explained</span>
+      <div class="credits">
+        <div>
+          <h2>How AWS promotional credit works</h2>
+          <p style="color:#3c4a3f;">Promotional credit offsets your AWS bill for a fixed amount and a fixed time window. It is not cash, and unused credit does not roll over indefinitely — most awards are valid for around 12 months.</p>
+        </div>
+        <ul class="credit-list">
+          <li><b>Who qualifies</b>Nonprofits, researchers and students, depending on the specific program.</li>
+          <li><b>How it's redeemed</b>Applied automatically in your AWS Billing dashboard once approved.</li>
+          <li><b>What it doesn't cover</b>Reserved Instances, domain purchases and some support fees.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <h2 class="section-title">How to apply</h2>
+      <p class="section-lede">The same four steps work across nearly every program on this page.</p>
+      <div class="steps">
+        <div class="step"><h3>Pick your program</h3><p>Use the comparison table above to find the closest match.</p></div>
+        <div class="step"><h3>Check eligibility</h3><p>Confirm nonprofit status, institution or research affiliation as required.</p></div>
+        <div class="step"><h3>Apply on AWS</h3><p>Follow the official link through to AWS or the partner portal (such as TechSoup).</p></div>
+        <div class="step"><h3>Activate your credit</h3><p>Once approved, credit appears in your AWS Billing dashboard automatically.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:var(--paper-raised);border-top:1px solid var(--line);border-bottom:1px solid var(--line);">
+    <div class="wrap">
+      <h2 class="section-title">Frequently asked questions</h2>
+      <details class="faq">
+        <summary>Do I need a credit card to start AWS Educate?</summary>
+        <p>No. AWS Educate is designed to be usable without a credit card, which is one of the main reasons it suits students.</p>
+      </details>
+      <details class="faq">
+        <summary>Can my school apply for the Nonprofit Credit Program?</summary>
+        <p>No. Schools, colleges and universities are directed to AWS Educate instead — the Nonprofit Credit Program is reserved for registered nonprofits.</p>
+      </details>
+      <details class="faq">
+        <summary>Do AWS certifications expire?</summary>
+        <p>Yes. Certifications are valid for three years, after which you retake the current exam or qualify through a higher-level certification.</p>
+      </details>
+      <details class="faq">
+        <summary>Is this page an official AWS site?</summary>
+        <p>No. This page is maintained by Zendalona as an independent guide, with links out to the official AWS pages for every program listed.</p>
+      </details>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="contact-cta">
+        <h2>Not sure where to start?</h2>
+        <p>Tell us a little about your goals — student, researcher or nonprofit — and we'll point you to the right program.</p>
+        <a class="btn btn-primary" href="#">Contact Zendalona</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <h4>Zendalona</h4>
+        <ul><li><a href="#">Home</a></li><li><a href="#">Products</a></li><li><a href="#">Events</a></li></ul>
+      </div>
+      <div>
+        <h4>Learn</h4>
+        <ul><li><a href="#">AWS Learning</a></li><li><a href="#">Philosophy</a></li><li><a href="#">Opportunities</a></li></ul>
+      </div>
+      <div>
+        <h4>Organization</h4>
+        <ul><li><a href="#">About us</a></li><li><a href="#">Donations</a></li><li><a href="#">Partners</a></li></ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul><li><a href="#">Contact us</a></li><li><a href="#">Facebook</a></li><li><a href="#">LinkedIn</a></li></ul>
+      </div>
+    </div>
+    <div class="foot-bottom">© Zendalona — Vision Beyond Sight. This page is a design mockup for management review, not a live URL.</div>
+  </div>
+</footer>
+
+<script>
+  var textBtn = document.getElementById('toggle-text');
+  var contrastBtn = document.getElementById('toggle-contrast');
+  textBtn.addEventListener('click', function(){
+    var on = document.body.classList.toggle('large-text');
+    textBtn.setAttribute('aria-pressed', on ? 'true' : 'false');
+  });
+  contrastBtn.addEventListener('click', function(){
+    var on = document.body.classList.toggle('high-contrast');
+    contrastBtn.setAttribute('aria-pressed', on ? 'true' : 'false');
+  });
+</script>
+
+</body>
+</html>
